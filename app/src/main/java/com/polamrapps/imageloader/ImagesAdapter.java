@@ -27,9 +27,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
         ImageObject imageObject = _dataSet.get(position);
-        holder.imageInfo.setText("Image ID : "+imageObject.getImageId());
+        String imageVal = mContext.getResources().getString(R.string.image_info);
+        holder.imageInfo.setText(String.format(imageVal, imageObject.getImageId(), imageObject.getFileName()));
         Utils.show("image url : "+imageObject.getImageUrl());
-        Picasso.with(mContext).load(imageObject.getImageUrl()).into(holder.imageView);
+        Picasso.with(mContext).load(imageObject.getImageUrl()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.imageView);
 //        holder.viewAnimator.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

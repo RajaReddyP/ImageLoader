@@ -22,7 +22,7 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:src="@drawable/larrypage"
+                android:src="@mipmap/ic_launcher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -39,8 +39,9 @@
                 android:scaleType="centerCrop"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textStyle="bold|italic"
                 android:clickable="true"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
         </ViewAnimator>
 

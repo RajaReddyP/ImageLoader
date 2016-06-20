@@ -1,5 +1,6 @@
 package com.polamrapps.imageloader;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -53,21 +54,28 @@ public class ImagesGridActivity extends AppCompatActivity {
     // it will return images from the flickr (available to public )
     private class GetImages extends AsyncTask<Void,ArrayList<ImageObject>,ArrayList<ImageObject>> {
 
+        private ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setMessage("Loading..");
+            progressDialog.show();
         }
 
         @Override
         protected void onPostExecute(ArrayList<ImageObject> list) {
             super.onPostExecute(list);
+            if(progressDialog != null && progressDialog.isShowing())
+                progressDialog.dismiss();
+
             if(list != null && list.size() > 0) {
                 ImagesAdapter mAdapter = new ImagesAdapter(mContext, list);
                 mRecyclerView.setAdapter(mAdapter);
             } else {
                 Utils.show("empty array");
             }
-
         }
 
         @Override

@@ -3,4 +3,6 @@
 
     <string name="flickr_key">fba686731e0535b04ab1e842e9461988</string>
     <string name="flickr_secret">877b097bec94a51b</string>
+
+    <string name="image_info">Image ID : %1$s \nImage Title : %2$s</string>
 </resources>
