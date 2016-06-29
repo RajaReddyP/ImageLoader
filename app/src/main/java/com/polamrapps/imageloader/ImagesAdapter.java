@@ -1,6 +1,7 @@
 package com.polamrapps.imageloader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,8 +27,8 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
-        ImageObject imageObject = _dataSet.get(position);
-        String imageVal = mContext.getResources().getString(R.string.image_info);
+        final ImageObject imageObject = _dataSet.get(position);
+        final String imageVal = mContext.getResources().getString(R.string.image_info);
         holder.imageInfo.setText(String.format(imageVal, imageObject.getImageId(), imageObject.getFileName()));
         Utils.show("image url : "+imageObject.getImageUrl());
         Picasso.with(mContext).load(imageObject.getImageUrl()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.imageView);
@@ -38,6 +39,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 //                AnimationFactory.flipTransition(holder.viewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
 //            }
 //        });
+        //holder.viewAnimator.
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +54,22 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
                 AnimationFactory.flipTransition(holder.viewAnimator, AnimationFactory.FlipDirection.RIGHT_LEFT);
             }
         });
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ActivityView.class);
+                intent.putExtra("ImageUrl", imageObject.getImageUrl());
+                //intent.putExtra("ImageInfo", String.format(idsfsmageVal, imageObject.getImageId(), imageObject.getFileName()));
+                intent.putExtra("ImageInfo", "sdfsdfdsgdsgdsgdgdsddsdfdfdsfdsfdsfdslkfjds iwjhf pdslmnvjcnvcsv" +
+                        "cfdsmf dshfioudshf sdsdjfdskvc nvjihcvip" +
+                        "" +
+                        "d'fdsvcjvjdiojg iopopdfpoidsoudsj cvcoijvlcdm doj" +
+                        "sdlfjdsoijdsiopfuds pifudsopifpdskf dgiudiewokr;k ejhpislksd;j dghjidiodhfoi djfj sdkjv dvcdvd" +
+                        "flkdsfoipdsahfudsfds; gb;oiopfidoif doiujpodkfk;j doiudoiuoiewj;wdkjofu hdpo ijp;oskdf;o sdhfp diudoif" +
+                        "sdfdo pgjd9p gdgdj;oidfj;iupip jo;oeijoieufpdiidhg ;dfigjpgkdag9fdugfdfduiodfgd");
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 
@@ -59,6 +77,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_card, parent, false);
         ImageViewHolder viewHolder = new ImageViewHolder(view);
+
         return viewHolder;
     }
 
