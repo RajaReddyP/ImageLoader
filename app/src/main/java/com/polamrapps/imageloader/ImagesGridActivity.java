@@ -2,6 +2,7 @@ package com.polamrapps.imageloader;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +29,7 @@ public class ImagesGridActivity extends AppCompatActivity {
     private static String IMAGES_URL = "https://api.flickr.com/services/rest/?&method=flickr.people.getPublicPhotos&api_key=fba686731e0535b04ab1e842e9461988&user_id=144234469@N08&format=json&per_page=50";
     private RecyclerView mRecyclerView;
     private Context mContext;
+    private ArrayList<ImageObject> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +37,59 @@ public class ImagesGridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_images_grid);
 
         mContext = this;
+        list = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         if(mRecyclerView != null) {
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+            ImageViewHolder.setOnClickListeners(new ImageViewHolder.ClickListeners() {
+                @Override
+                public void onButtonClick(ViewAnimator mViewAnimator, int position, View v) {
+                    Log.i("PolamR", "onButtonClick" +position);
+                    Intent intent = new Intent(mContext, ActivityView.class);
+                    intent.putExtra("ImageUrl", list.get(position).getImageUrl());
+                    //intent.putExtra("ImageInfo", String.format(idsfsmageVal, imageObject.getImageId(), imageObject.getFileName()));
+                    intent.putExtra("ImageInfo", "sdfsdfdsgdsgdsgdgdsddsdfdfdsfdsfdsfdslkfjds iwjhf pdslmnvjcnvcsv" +
+                        "cfdsmf dshfioudshf sdsdjfdskvc nvjihcvip" +
+                        "" +
+                        "d'fdsvcjvjdiojg iopopdfpoidsoudsj cvcoijvlcdm doj" +
+                        "sdlfjdsoijdsiopfuds pifudsopifpdskf dgiudiewokr;k ejhpislksd;j dghjidiodhfoi djfj sdkjv dvcdvd" +
+                        "flkdsfoipdsahfudsfds; gb;oiopfidoif doiujpodkfk;j doiudoiuoiewj;wdkjofu hdpo ijp;oskdf;o sdhfp diudoif" +
+                        "sdfdo pgjd9p gdgdj;oidfj;iupip jo;oeijoieufpdiidhg ;dfigjpgkdag9fdugfdfduiodfgd");
+                mContext.startActivity(intent);
+                }
+
+                @Override
+                public void onImageViewClick(ViewAnimator mViewAnimator,int position, View v) {
+                    Log.i("PolamR", "onImageViewClick" +position);
+                    ImageObject imageObject = list.get(position);
+                    imageObject.setFlip(true);
+                    list.add(position,imageObject);
+
+
+                    AnimationFactory.flipTransition(mViewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
+                }
+
+                @Override
+                public void onTextInfoClick(ViewAnimator mViewAnimator,int position, View v) {
+                    Log.i("PolamR", "onTextInfoClick" +position);
+                    ImageObject object = list.get(position);
+                    object.setFlip(false);
+                    list.add(position, object);
+                    final String imageVal = mContext.getResources().getString(R.string.image_info);
+                    TextView tv = (TextView) v;
+                    tv.setText(String.format(imageVal, object.getImageId(), object.getFileName()));
+                    AnimationFactory.flipTransition(mViewAnimator, AnimationFactory.FlipDirection.RIGHT_LEFT);
+                }
+            });
         }
         if(isNetworkConnected())
             new GetImages().execute();
         else
             Toast.makeText(mContext, "No Internet", Toast.LENGTH_SHORT).show();
+
     }
 
     /* this method will check internet connection */
@@ -65,12 +113,13 @@ public class ImagesGridActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<ImageObject> list) {
+        protected void onPostExecute(ArrayList<ImageObject> _list) {
             super.onPostExecute(list);
             if(progressDialog != null && progressDialog.isShowing())
                 progressDialog.dismiss();
 
-            if(list != null && list.size() > 0) {
+            if(_list != null && _list.size() > 0) {
+                list = _list;
                 ImagesAdapter mAdapter = new ImagesAdapter(mContext, list);
                 mRecyclerView.setAdapter(mAdapter);
             } else {
@@ -115,7 +164,7 @@ public class ImagesGridActivity extends AppCompatActivity {
                     for (int i = 0; i < photoArray.length(); i++) {
                         JSONObject object = photoArray.getJSONObject(i);
                         String imageUrl = generateImageUrl(object);
-                        ImageObject imageObject = new ImageObject(object.getString("id"), object.getString("title"), imageUrl);
+                        ImageObject imageObject = new ImageObject(object.getString("id"), object.getString("title"), imageUrl, false);
                         arrayList.add(imageObject);
                     }
                 }

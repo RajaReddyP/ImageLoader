@@ -5,10 +5,11 @@ package com.polamrapps.imageloader;
  */
 public class ImageObject {
 
-    public ImageObject(String _imageId,String _fileName, String _imageUrl) {
+    public ImageObject(String _imageId,String _fileName, String _imageUrl, boolean _flip) {
         this.fileName = _fileName;
         this.imageId = _imageId;
         this.imageUrl = _imageUrl;
+        this.flip = _flip;
     }
 
     public String getImageId() {
@@ -38,4 +39,14 @@ public class ImageObject {
     private String imageId;
     private String fileName;
     private String imageUrl;
+
+    public boolean isFlip() {
+        return flip;
+    }
+
+    public void setFlip(boolean flip) {
+        this.flip = flip;
+    }
+
+    private boolean flip = false;
 }
