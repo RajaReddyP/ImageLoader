@@ -68,7 +68,7 @@ public class ImagesGridActivity extends AppCompatActivity {
                     imageObject.setFlip(true);
                     list.add(position,imageObject);
 
-
+                    mRecyclerView.getAdapter().notifyItemChanged(position);
                     AnimationFactory.flipTransition(mViewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
                 }
 
@@ -81,6 +81,8 @@ public class ImagesGridActivity extends AppCompatActivity {
                     final String imageVal = mContext.getResources().getString(R.string.image_info);
                     TextView tv = (TextView) v;
                     tv.setText(String.format(imageVal, object.getImageId(), object.getFileName()));
+                    mRecyclerView.getAdapter().notifyItemChanged(position);
+                    //mRecyclerView.getAdapter().notifyDataSetChanged();
                     AnimationFactory.flipTransition(mViewAnimator, AnimationFactory.FlipDirection.RIGHT_LEFT);
                 }
             });

@@ -27,12 +27,19 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
         final ImageObject imageObject = _dataSet.get(position);
         final String imageVal = mContext.getResources().getString(R.string.image_info);
-        if(imageObject.isFlip())
-            holder.imageInfo.setText(String.format(imageVal, imageObject.getImageId(), imageObject.getFileName()));
-        else {
+        Utils.show("imageObject.isFlip() : " + imageObject.isFlip());
+        holder.imageInfo.setText(String.format(imageVal, imageObject.getImageId(), imageObject.getFileName()));
+        Picasso.with(mContext).load(imageObject.getImageUrl()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.imageView);
+        if(imageObject.isFlip()) {
+            //holder.viewAnimator.
+            holder.viewAnimator.setDisplayedChild(1);
+        } else {
+            holder.viewAnimator.setDisplayedChild(0);
+            //holder.viewAnimator.setAnimateFirstView(false);
             Utils.show("image url : " + imageObject.getImageUrl());
-            Picasso.with(mContext).load(imageObject.getImageUrl()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(holder.imageView);
+
         }
+
 //        holder.viewAnimator.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
